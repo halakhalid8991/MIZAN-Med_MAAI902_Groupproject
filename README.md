@@ -2,7 +2,7 @@
 
 **Evidence grounded health claim verification with calibrated abstention and a cross lingual Arabic evaluation**
 
-MIZAN-Med checks a short health claim, written in English or Arabic, against research abstracts from PubMed. It shows the exact sentences behind its answer and the study design they come from, and it gives a verdict only when the evidence and the model's calibrated confidence are strong enough. Otherwise it reports that there is not enough evidence. The name comes from the Arabic word *mizan* (ميزان), meaning balance or scale.
+MIZAN-Med checks a short health claim, typed or spoken in English or Arabic, against research abstracts from PubMed. It shows the exact sentences behind its answer and the study design they come from, and it gives a verdict only when the evidence and the model's calibrated confidence are strong enough. Otherwise it reports that there is not enough evidence. The name comes from the Arabic word *mizan* (ميزان), meaning balance or scale.
 
 > **Research prototype only. This is not medical advice.** Verdicts and translations can be wrong. Do not enter personal health information.
 
@@ -13,7 +13,9 @@ Group project for **MAAI 902: Natural Language Processing and LLMs**, University
 ## How it works
 
 ```
-Claim (English or Arabic)
+Claim (English or Arabic, typed or spoken)
+   │
+   ├─ Spoken claim → text with Whisper base (the user reviews and edits the transcript)
    │
    ├─ Arabic → English with NLLB-200 (the user can correct the English)
    │
@@ -26,6 +28,15 @@ Claim (English or Arabic)
 5. Explain    Extractive explanation by default; an LLM (Qwen3-4B, run locally) explanation is shown
               only if its citations are valid and every sentence is entailed by the cited evidence
 ```
+
+## Speech input
+
+The website also accepts spoken claims. Open **🎙️ Speak your claim · تسجيل الادعاء**, choose Auto detect, English or Arabic, record up to 30 seconds, stop, and press **Transcribe recording**. The multilingual `openai/whisper-base` model transcribes the recording on the CPU, so it does not compete with the verifier for GPU memory. The transcript is added to the claim box and does not start the check automatically, so it can be corrected first.
+
+* The first transcription downloads the Whisper model and can take a few minutes.
+* Recordings are processed on the server hosting the demo and are not saved to project files; Gradio may keep temporary audio files during a session.
+* Another multilingual Whisper model can be used by setting `MIZAN_SPEECH_MODEL`. Do not use an English only model for Arabic.
+* This is a usability feature. It was tested informally and is **not** part of the reported evaluation.
 
 ## Main results
 
@@ -47,8 +58,9 @@ A native Arabic speaker reviewed the 61 claims whose prediction changed after tr
 
 | File or folder | Contents |
 |---|---|
-| `MIZAN_Med_v0_6_2.ipynb` | Executed notebook: data audit, baselines, training, evaluation, ablations and the website |
-| `mizan_core.py`, `mizan_research.py`, `mizan_llm.py`, `mizan_website.py` | Pipeline modules (the notebook also writes these files itself when run) |
+| `MIZAN_Med_v0_6_2.ipynb` | Main executed run: data audit, baselines, training, evaluation, ablations and the website. The main results in the paper and report come from this run |
+| `MIZAN_Med_Hala_final.ipynb` | Repeat run of the same notebook on a second machine (verifier macro F1 0.821), with two extra cells: the single pair calibration figures and confusion matrix, and the native speaker review of the 61 changed Arabic predictions. Its website module also includes the speech input |
+| `mizan_core.py`, `mizan_research.py`, `mizan_llm.py`, `mizan_website.py` | Pipeline modules (the notebook also writes these files itself when run). `mizan_website.py` contains the Gradio website, including the speech input |
 | `docs/` | Final paper, Assessment 3 report and presentation |
 
 The dataset bundle (`MIZAN_Med_Datasets.zip`, with `MANIFEST.json` holding the SHA-256 checksums, sources and licences) and the human review files (`MIZAN_Med_Review_Files.zip`) are kept in the project Google Drive folder, not in this repository:
@@ -64,7 +76,9 @@ They are shared for academic assessment only (see [Datasets](#datasets)).
 2. Download `MIZAN_Med_Datasets.zip` and `MIZAN_Med_Review_Files.zip` from the [project Google Drive folder](https://drive.google.com/drive/folders/1ScUzF-NM8kCJgKGTWjLX0eu47k-jAVHx?usp=drive_link) and put them in **My Drive/MIZAN-Med** (or upload them when the notebook asks). Keep them zipped.
 3. Run the cells from the top. After the first install cell, restart the session (**Runtime → Restart session**) and run all cells again.
 4. In **Experiment controls**, set `EXPERIMENT_MODE = 'SMOKE'` for a quick test or `'FULL'` for the reported results. SMOKE outputs are never valid results.
-5. Run **Start the website** last. It prints a temporary `gradio.live` link, valid for 72 hours.
+5. Run **Start the website** last. It prints a temporary `gradio.live` link, valid for 72 hours. Open the link (not `localhost`) and allow microphone access to use the speech input.
+
+To open only the website after a FULL run, run the setup cells (environment, install, workspace, the four `%%writefile` cells and the module import), skip the experiments, and run **Start the website**. The trained verifier is loaded from Drive.
 
 Finished training runs are saved to Drive and reused, so an interrupted run can be resumed by running the cells again.
 
@@ -76,7 +90,7 @@ export MIZAN_PROJECT_DIR="/path/to/MIZAN-Med"     # Windows: set MIZAN_PROJECT_D
 ```
 
 ### Main libraries
-PyTorch, Hugging Face `transformers` (≥4.51, <5), `datasets` 3.6.0, `sentence-transformers` 3, `rank_bm25`, scikit-learn, SciPy, `sacrebleu`, `gradio` 4.44.1. Exact versions are pinned in the install cell.
+PyTorch, Hugging Face `transformers` (≥4.51, <5), `datasets` 3.6.0, `sentence-transformers` 3, `rank_bm25`, scikit-learn, SciPy, `sacrebleu`, `gradio` 4.44.1 (Whisper speech input through the `transformers` pipeline and `scipy` for resampling). Exact versions are pinned in the install cell.
 
 ## Datasets
 
@@ -101,6 +115,7 @@ AraCOVID19-MFH and PubMedQA were screened but excluded (tweet IDs only; question
 | Translation | NLLB-200 and OPUS-MT |
 | LLM | `Qwen/Qwen3-4B-Instruct-2507`, run locally |
 | Independent checker | DeBERTa-v3-base NLI cross encoder |
+| Speech input | `openai/whisper-base` (multilingual), run on the CPU |
 
 ## Limitations
 
@@ -108,15 +123,16 @@ AraCOVID19-MFH and PubMedQA were screened but excluded (tweet IDs only; question
 * The Arabic claims are machine translated Modern Standard Arabic, not real or dialectal rumours.
 * The evidence rules were tuned on SciFact, not on live PubMed, and no user study has been carried out.
 * LLM explanations were checked automatically, not by human reviewers.
+* The speech input was tested only informally; its accuracy on Arabic, and especially Gulf dialect, has not been measured.
 * NLLB-200 and the QCRI data are licensed for non commercial use only, so the system as built is for research use only.
 
 ## Team
 
 | Member | Main role |
 |---|---|
-| Hala Khalid Sarhan | Idea, data, initial code, Arabic evaluation, paper, report and presentation |
-| Nourhanne Abdelaziz | Idea, initial code and literature review |
-| Mohamed Sakr | Idea, data, initial code, Arabic evaluation and demonstration |
+| Hala Khalid Sarhan | Idea, data, initial code, Arabic evaluation, paper, and presentation |
+| Nourhanne Abdelaziz | Idea, initial code and literature review and report |
+| Mohamed Sakr | Idea, data, initial code, speech to text feature and demonstration |
 | Harley Douti-Mama | Code development, fine tuning, experiments and demonstration |
 | Sanzhar Seisenov | Presentation support |
 
