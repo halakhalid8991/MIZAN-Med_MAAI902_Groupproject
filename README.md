@@ -14,7 +14,7 @@ Group project for **MAAI 902: Natural Language Processing and LLMs**, University
 | **Final executed notebook** | [`MIZAN_Med_Hala_speech_final.ipynb`](https://colab.research.google.com/drive/12RItlK_TSLlOtj1jebWsIeRzPWjx23tI?usp=sharing) |
 | **Technical report** | [`MIZAN-Med_Assessment3_Report_Final.docx`](https://github.com/halakhalid8991/MIZAN-Med_MAAI902_Groupproject/blob/main/MIZAN-Med_Assessment3_Report_Final.docx) |
 | **Datasets and review files** | [Project Google Drive folder](https://drive.google.com/drive/folders/1ScUzF-NM8kCJgKGTWjLX0eu47k-jAVHx?usp=drive_link) |
-| **Overleaf report** | [`Overlead Paper link `](https://github.com/halakhalid8991/MIZAN-Med_MAAI902_Groupproject/blob/main/MIZAN-Med_Assessment3_Report_Final.docx) |
+| **Overleaf report** | [`Overlead Paper link `](https://github.com/halakhalid8991/MIZAN-Med_MAAI902_Groupproject/blob/main/MAAI_Project_0___Hala_Nourhanne_Sakr_Sanzhar_Final.pdf) |
 
 ---
 
