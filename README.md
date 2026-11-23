@@ -51,9 +51,6 @@ flowchart TD
 
 **Hallucination safeguards.** The verdict always comes from the fine-tuned verifier reading real PubMed sentences, never from the LLM. Generated text is optional: a rewording is used only if it keeps the meaning (two-way entailment ≥ 0.80), and an explanation is shown only if every cited PubMed ID was retrieved and every sentence is entailed by the cited evidence (≥ 0.90). Otherwise the user sees the extracted evidence sentence. When the evidence is weak, the system answers "not enough evidence" instead of guessing.
 
-### Pipeline figure (as in the paper)
-
-![MIZAN-Med pipeline](figures/pipeline.png)
 
 ### Components
 
