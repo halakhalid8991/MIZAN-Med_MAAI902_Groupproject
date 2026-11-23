@@ -181,7 +181,6 @@ AraCOVID19-MFH and PubMedQA were screened but excluded (tweet IDs only; question
 
 ## Limitations
 
-* HealthVer covers COVID-19 only, so other health topics are untested.
 * The Arabic claims are machine translated Modern Standard Arabic, not real or dialectal rumours.
 * The evidence rules were tuned on SciFact, not on live PubMed, and no user study has been carried out.
 * LLM explanations were checked automatically, not by human reviewers.
