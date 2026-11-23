@@ -10,8 +10,8 @@ Group project for **MAAI 902: Natural Language Processing and LLMs**, University
 
 | | |
 |---|---|
-| **Demo video** | [`demo/MIZAN-Med_demo.mp4`]([demo/MIZAN-Med_demo.mp4](https://drive.google.com/file/d/1AS1sIaq-9OZkurno-vvJr58rUKQBEHGg/view?usp=drive_link)): typed English and Arabic claims and the Whisper speech input on the live website |
-| **Final executed notebook** | [`MIZAN_Med_speech_final.ipynb`](MIZAN_Med_speech_final.ipynb) |
+| **Demo video** | [Watch on Google Drive](https://drive.google.com/file/d/1AS1sIaq-9OZkurno-vvJr58rUKQBEHGg/view?usp=drive_link): typed English and Arabic claims and the Whisper speech input on the live website |
+| **Final executed notebook** | [`MIZAN_Med_Hala_speech_final.ipynb`](https://github.com/halakhalid8991/MIZAN-Med_MAAI902_Groupproject/blob/main/MIZAN_Med_Hala_speech_final.ipynb) |
 | **Report and paper** | [`docs/`](docs/) |
 | **Datasets and review files** | [Project Google Drive folder](https://drive.google.com/drive/folders/1ScUzF-NM8kCJgKGTWjLX0eu47k-jAVHx?usp=drive_link) |
 
@@ -109,13 +109,13 @@ All numbers are produced by the notebook; nothing is hard coded. The table repor
 
 A native Arabic speaker reviewed the 61 claims whose prediction changed under NLLB-200 translate-test (seed 42 of the second run): 42 (68.9%) kept their meaning in translation, 15 (24.6%) shifted in meaning and 4 (6.6%) lost a negation, so translation errors explain about one third of the changed verdicts. NLLB-200 both created the Arabic claims and translated them back, so the 1.2-point gap is best read as a lower bound.
 
-**Second run.** The full notebook was run a second time on another machine (`MIZAN_Med_speech_final.ipynb`). The verifier scored 0.821 instead of 0.817, and every main conclusion held. Some numbers differ between the runs because GPU training is not fully deterministic. In particular, re-tuning the evidence rules chose stricter values: minimum probability 0.80, similarity 0.50 and no term rule, compared with 0.60 and 25% of key terms in the first run. These rules answered **38.7%** of SciFact claims at **81.9%** accuracy. The demo website loads the rule file and verifier from this final run.
+**Second run.** The full notebook was run a second time on another machine (`MIZAN_Med_Hala_speech_final.ipynb`). The verifier scored 0.821 instead of 0.817, and every main conclusion held. Some numbers differ between the runs because GPU training is not fully deterministic. In particular, re-tuning the evidence rules chose stricter values: minimum probability 0.80, similarity 0.50 and no term rule, compared with 0.60 and 25% of key terms in the first run. These rules answered **38.7%** of SciFact claims at **81.9%** accuracy. The demo website loads the rule file and verifier from this final run.
 
 ## Repository contents
 
 | File or folder | Contents |
 |---|---|
-| `MIZAN_Med_speech_final.ipynb` | **Final executed notebook** (second full run, verifier macro F1 0.821): data audit, baselines, training, evaluation, ablations, the single-pair calibration figures and confusion matrix, the native-speaker review of the 61 changed Arabic predictions, and the website with speech input. The demo and the report's Figure 4b and Sections 5.4 and 5.7 come from this run |
+| `MIZAN_Med_Hala_speech_final.ipynb` | **Final executed notebook** (second full run, verifier macro F1 0.821): data audit, baselines, training, evaluation, ablations, the single-pair calibration figures and confusion matrix, the native-speaker review of the 61 changed Arabic predictions, and the website with speech input. The demo and the report's Figure 4b and Sections 5.4 and 5.7 come from this run |
 | `MIZAN_Med_v0_6_2.ipynb` | First full executed run. The report's Tables 6–9 and this README's main results come from this run |
 | `mizan_core.py` | Data loading, retrieval (BM25 + BGE-base, reciprocal rank fusion), verifier, calibration and evidence rules |
 | `mizan_research.py` | Experiments: baselines, fine-tuning over three seeds, evaluation, rule tuning, ablations and the Arabic evaluation |
@@ -123,7 +123,6 @@ A native Arabic speaker reviewed the 61 claims whose prediction changed under NL
 | `mizan_website.py` | Gradio website, including the Whisper speech input |
 | `figures/pipeline.png` | Pipeline figure (the same figure as in the paper) |
 | `requirements.txt` | Pinned library versions (the same as the notebook's install cell) |
-| `demo/MIZAN-Med_demo.mp4` | Screen recording of the live website: an Arabic claim, an English claim and a spoken claim, each with its verdict, evidence sentences and PubMed links |
 | `docs/` | `MIZAN-Med_Assessment3_Report_v4.pdf` (technical report), the research paper PDF and the presentation |
 
 The four `.py` modules are the files the notebook writes with `%%writefile` when it runs; they are included so the code can be read and reviewed without opening the notebook.
@@ -137,7 +136,7 @@ They are shared for academic assessment only (see [Datasets](#datasets)).
 ## Running the notebook
 
 ### Google Colab (recommended)
-1. Open `MIZAN_Med_speech_final.ipynb` in Colab and choose a GPU runtime (an NVIDIA L4 was used; a T4 also works, but more slowly).
+1. Open `MIZAN_Med_Hala_speech_final.ipynb` in Colab and choose a GPU runtime (an NVIDIA L4 was used; a T4 also works, but more slowly).
 2. Download `MIZAN_Med_Datasets.zip` and `MIZAN_Med_Review_Files.zip` from the [project Google Drive folder](https://drive.google.com/drive/folders/1ScUzF-NM8kCJgKGTWjLX0eu47k-jAVHx?usp=drive_link) and put them in **My Drive/MIZAN-Med** (or upload them when the notebook asks). Keep them zipped.
 3. Run the cells from the top. After the first install cell, restart the session (**Runtime → Restart session**) and run all cells again.
 4. In **Experiment controls**, set `EXPERIMENT_MODE = 'SMOKE'` for a quick test or `'FULL'` for the reported results. SMOKE outputs are never valid results.
