@@ -12,7 +12,7 @@ Group project for **MAAI 902: Natural Language Processing and LLMs**, University
 |---|---|
 | **Demo video** | [Watch on Google Drive](https://drive.google.com/file/d/1AS1sIaq-9OZkurno-vvJr58rUKQBEHGg/view?usp=drive_link): typed English and Arabic claims and the Whisper speech input on the live website |
 | **Final executed notebook** | [`MIZAN_Med_Hala_speech_final.ipynb`](https://colab.research.google.com/drive/12RItlK_TSLlOtj1jebWsIeRzPWjx23tI?usp=sharing) |
-| **Report and paper** | [`docs/`](docs/) |
+| **Report and paper** | [`docs/`]([docs/](https://github.com/halakhalid8991/MIZAN-Med_MAAI902_Groupproject/edit/main/README.md#:~:text=MIZAN%2DMed_Assessment3_Report_Final.-,docx,-MIZAN_Med_Hala_speech_final.ipynb)) |
 | **Datasets and review files** | [Project Google Drive folder](https://drive.google.com/drive/folders/1ScUzF-NM8kCJgKGTWjLX0eu47k-jAVHx?usp=drive_link) |
 
 ---
